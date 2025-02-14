@@ -15,8 +15,10 @@ export function printStringLiteral(value: string, quotation = '"'): string {
     // So, we only need to do our own escaping for ' case.
     let literalStr = JSON.stringify(value).toString();
     if (quotation !== '"') {
+        const backslashRegEx = /\\/g;
         literalStr = `'${literalStr
             .substring(1, literalStr.length - 1)
+            .replace(backslashRegEx, '\\\\')
             .replace(escapedDoubleQuoteRegEx, '"')
             .replace(singleTickRegEx, "\\'")}'`; // CodeQL [SM02383] Code ql is just wrong here. We don't need to replace backslashes.
     }
